@@ -4,6 +4,9 @@
   <app-users />
 
   <div>
-    <p>Todo ...</p>
+    <!--directiva especial de , se importa en el componente-->
+    <!--dice a angular donde debe renderizar el contenido del enrutamiento-->
+    <router-outlet></router-outlet>
+    <!--ahora si accedemos a tasks, se muestra dentro de este div el contenido del componente TasksComponent-->
   </div>
 </main>

@@ -1,5 +1,10 @@
 <div>
-  <a>
+  <a [routerLink]="['/users', user().id]" routerLinkActive="selected">
+    <!--(routerLinkActive)clase que se asocia al link que esté seleccionado (directiva de angular)-->
+    <!--de esta forma, es mejor que usando un a=href porque no se recarga la pagina
+    simplemente se carga el componente asociado a esta path-->
+    <!--PARA QUE ESTO FUNCIONE TENEMOS QUE IMPORTAR EN EL COMPONENTE EL ROUTERLINK
+    SIN EL NO FUNCIONARÁ (ya sea en el imports o en el module si trabajamos con modulos)-->
     <img [src]="imagePath()" [alt]="user().name" />
     <span>{{ user().name }}</span>
   </a>

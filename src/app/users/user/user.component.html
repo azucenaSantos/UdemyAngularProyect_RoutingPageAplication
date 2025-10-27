@@ -1,5 +1,5 @@
 <div>
-  <a [routerLink]="['/users', user().id]" routerLinkActive="selected">
+  <a [routerLink]="['/users', user().id, 'tasks']" routerLinkActive="selected"> <!--añadimos tasks para acceder a las tasks de un usuario concreto-->
     <!--(routerLinkActive)clase que se asocia al link que esté seleccionado (directiva de angular)-->
     <!--de esta forma, es mejor que usando un a=href porque no se recarga la pagina
     simplemente se carga el componente asociado a esta path-->

@@ -2,7 +2,7 @@ import { Routes } from "@angular/router";
 import { TasksComponent } from "../tasks/tasks.component";
 import { NewTaskComponent } from "../tasks/new-task/new-task.component";
 
-export const router: Routes = [
+export const routes: Routes = [
   //NUEVA RUTA HIJA -> ENCARGADA DE REDIRIGIR AL USUARIO A UNA RUTA CON SENTIDO SI ACCEDE POR EJEMLO A USERS/ID/ -> QUE MUESTRE
   //EL CONTENIDO DE USERS/ID/TASKS
   {

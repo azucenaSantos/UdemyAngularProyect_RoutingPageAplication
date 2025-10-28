@@ -1,4 +1,11 @@
-
+<p>
+  <a routerLink="./" [queryParams]="{order: order==='asc' ? 'desc': 'asc'}">
+    <!--con el queryParams añadimos a la url lo que ponemos como objeto parámetro -> /tasks?order=asc-->
+    <!--configurandolo de la siguiente forma el queryParams su valor cambia dinámicamente de asc a desc en cada click en el a-->
+    Sort {{order==='asc' ? 'Descending': 'Ascending'}}
+    <!--usamos el valor de order para determinar qué verá el usuario y sepa que ordenamiento puede activar-->
+  </a>
+</p>
 <ul>
   @for (task of userTasks(); track task.id) {
   <li>

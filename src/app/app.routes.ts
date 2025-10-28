@@ -27,6 +27,14 @@ export const routes: Routes = [
     component: UserTasksComponent, //componente que se mostrará
     //configuraremos rutas hijas, para acceder a las tasks de un user en concreto
     children: [
+      //NUEVA RUTA HIJA -> ENCARGADA DE REDIRIGIR AL USUARIO A UNA RUTA CON SENTIDO SI ACCEDE POR EJEMLO A USERS/ID/ -> QUE MUESTRE
+      //EL CONTENIDO DE USERS/ID/TASKS
+      {
+        path: '',
+        //si no hay nada en la path, redirige a otra path que tenemos como hijo (si accedemos a user/id -> nos lleva a user/id/tasks)
+        redirectTo: 'tasks',
+        pathMatch: 'prefix'
+      },
       {
         path: 'tasks', //dominio/users/userId/tasks
         component: TasksComponent,

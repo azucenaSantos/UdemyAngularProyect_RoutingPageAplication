@@ -1,4 +1,11 @@
-import { Component, computed, DestroyRef, inject, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  input,
+  OnInit,
+} from '@angular/core';
 import { UsersService } from '../users.service';
 import {
   ActivatedRoute,
@@ -17,44 +24,24 @@ import {
   imports: [RouterOutlet, RouterLink],
 })
 export class UserTasksComponent {
-  private usersService = inject(UsersService);
-  private destroyRef = inject(DestroyRef);
-
-  //Tenemos que obtener el id de la url, para obtener el nombre del user y mostrarlo en el componente
-  //userId = input.required<string>(); //con esto ya obtenemos el id de la ruta!! MAGIA XD tiene
-  //que ser el mismo nombre que hemos puesto en el app.routes.ts en la path si no es el mismo no va xd
-
-  /*userName = computed(
-    () => this.usersService.users.find((u) => u.id == this.userId())?.name
-  );*/
-  //obtenemos el NAME de aquel usuario cuya id sea como la del userId
-
-  /***************************************/
-
-  //Otra forma de obtener el id de la ruta sin ser con input
-  private activatedRoute = inject(ActivatedRoute); //info sobre la ruta que está en la url en este momento
   //userName = '';
   userName = input.required<String>();
   //Podemos acceder desde este componente a la info del objeto que hemos pasado
   //al data en el app.routes.ts
   message = input.required<string>(); //con el mismo nombre ya lo obtenemos
 
-  // ngOnInit() {
-  //   console.log('Input Data:', this.message());
-  //   console.log(this.activatedRoute);
-  //   const suscription = this.activatedRoute.paramMap.subscribe({
-  //     next: (paramMap) =>
-  //       (this.userName =
-  //         this.usersService.users.find((u) => u.id === paramMap.get('userId'))
-  //           ?.name || ''), //el paramMap nos permite hacer un get de la parte de la url que queramos
-  //     //en este caso userId que es lo que pusimos en la path del app.routes.ts
+  //private activatedRoute = inject(ActivatedRoute);
+  // ngOnInit(): void {
+  //   //la propiedad data contiene los datos fusioandos estáticos y dinámicos
+  //   //que tenemos en el app.routes.ts
+  //   this.activatedRoute.data.subscribe({
+  //     next: (data) => {
+  //       console.log(data);
+  //     },
   //   });
-  //   this.destroyRef.onDestroy(() => suscription.unsubscribe());
-  // } --> NO LO NECESITAMOS GRACIAS AL RESOLVER
-  //RECOGEMOS EL USERNAME ARRIBA, DEL RESOLVER!!!
+  // } -> se podria acceder asi al data tambien y de ahi acceder al userName o al message
 }
 
-//Funcion fuera de la clase del componente:
 //Funcion que se enviará al resolve del app.routes.ts
 export const resolveUserName: ResolveFn<String> = (
   activatedRoute: ActivatedRouteSnapshot,
@@ -65,8 +52,5 @@ export const resolveUserName: ResolveFn<String> = (
     usersService.users.find(
       (u) => u.id === activatedRoute.paramMap.get('userId')
     )?.name || '';
-  //Datos que se van a devolver
   return userName;
 };
-
-//CON ESTO EL COMPONENTE ESTÁ MUCHO MEJOR ESTRUCTURADO!! si quitasemos los comentarios xd

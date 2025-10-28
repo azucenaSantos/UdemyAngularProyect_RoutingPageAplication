@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 
 import { UserComponent } from './user/user.component';
 import { UsersService } from './users.service';
+import { ResolveFn } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -14,3 +15,4 @@ export class UsersComponent {
   private usersService = inject(UsersService);
   users = this.usersService.users;
 }
+

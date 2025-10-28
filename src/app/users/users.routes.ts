@@ -1,6 +1,6 @@
-import { Routes } from "@angular/router";
-import { TasksComponent } from "../tasks/tasks.component";
-import { NewTaskComponent } from "../tasks/new-task/new-task.component";
+import { Routes } from '@angular/router';
+import { resolveUserTasks, TasksComponent } from '../tasks/tasks.component';
+import { NewTaskComponent } from '../tasks/new-task/new-task.component';
 
 export const routes: Routes = [
   //NUEVA RUTA HIJA -> ENCARGADA DE REDIRIGIR AL USUARIO A UNA RUTA CON SENTIDO SI ACCEDE POR EJEMLO A USERS/ID/ -> QUE MUESTRE
@@ -14,9 +14,11 @@ export const routes: Routes = [
   {
     path: 'tasks', //dominio/users/userId/tasks
     component: TasksComponent,
-    //OJO! como es una clase hija tenemos que añadir un router-outlet en el componente padre porque el del app.component no es suficiente
-    //para poder acceder a una ruta huja de un componente!!
-    //en el user-tasks.component.html -> añadimos router-outlet donde queramos mostrar a nuestro TaskComponent al acceder a tasks de un user
+    runGuardsAndResolvers: 'always', //necesitamos esta propiedad para que el resolver se ejecute cuando la path se modifica
+    //al hacer click en asc y desc
+    resolve: {
+      userTasks: resolveUserTasks,
+    },
   },
   {
     //Con esta nueva ruta hija mostraremos el formulario de añadir una nueva task al acceder a tasks/new :D

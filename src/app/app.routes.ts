@@ -39,6 +39,7 @@ export const routes: Routes = [
     resolve: {
       //Esta propiedad nos permite definir un objeto de clave valor pero de datos dinámicos
       userName: resolveUserName //ahora en el componente tenemos acceso a este valor de "userName" calculado con el resolveUserName
+      //podriamos tener aqui más resolvers, los que quisiesemos
     }
   },
   //Añadiremos una ruta para en caso de que el usuario intente acceder a una pagina que no existe se muestre un componente de pagina not found

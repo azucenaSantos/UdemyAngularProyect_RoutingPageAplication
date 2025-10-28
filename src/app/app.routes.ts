@@ -3,6 +3,7 @@ import { TasksComponent } from './tasks/tasks.component';
 import { NoTaskComponent } from './tasks/no-task/no-task.component';
 import { UserTasksComponent } from './users/user-tasks/user-tasks.component';
 import { NewTaskComponent } from './tasks/new-task/new-task.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
   //Vamos a registrar más rutas, que es como será realmente el funcionamiento del enrutamiento
@@ -39,5 +40,10 @@ export const routes: Routes = [
         component: NewTaskComponent,
       },
     ],
+  },
+  //Añadiremos una ruta para en caso de que el usuario intente acceder a una pagina que no existe se muestre un componente de pagina not found
+  {
+    path: '**', //si la path que introduce el usuario no coincide con ninguna de las antes descritas en este arhivo angular salta a aqui
+    component: NotFoundComponent, //nuevo componente que se va a mostrar en el hueco de las tasks cuando se acceda a una url inexistente
   },
 ];

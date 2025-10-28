@@ -1,6 +1,13 @@
 import { Component, computed, DestroyRef, inject, input } from '@angular/core';
 import { UsersService } from '../users.service';
-import { ActivatedRoute, RouterOutlet, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  RouterOutlet,
+  RouterLink,
+  ResolveFn,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 @Component({
   selector: 'app-user-tasks',
@@ -26,22 +33,40 @@ export class UserTasksComponent {
 
   //Otra forma de obtener el id de la ruta sin ser con input
   private activatedRoute = inject(ActivatedRoute); //info sobre la ruta que está en la url en este momento
-  userName = '';
-
+  //userName = '';
+  userName = input.required<String>();
   //Podemos acceder desde este componente a la info del objeto que hemos pasado
   //al data en el app.routes.ts
   message = input.required<string>(); //con el mismo nombre ya lo obtenemos
 
-  ngOnInit() {
-    console.log('Input Data:', this.message());
-    console.log(this.activatedRoute);
-    const suscription = this.activatedRoute.paramMap.subscribe({
-      next: (paramMap) =>
-        (this.userName =
-          this.usersService.users.find((u) => u.id === paramMap.get('userId'))
-            ?.name || ''), //el paramMap nos permite hacer un get de la parte de la url que queramos
-      //en este caso userId que es lo que pusimos en la path del app.routes.ts
-    });
-    this.destroyRef.onDestroy(() => suscription.unsubscribe());
-  }
+  // ngOnInit() {
+  //   console.log('Input Data:', this.message());
+  //   console.log(this.activatedRoute);
+  //   const suscription = this.activatedRoute.paramMap.subscribe({
+  //     next: (paramMap) =>
+  //       (this.userName =
+  //         this.usersService.users.find((u) => u.id === paramMap.get('userId'))
+  //           ?.name || ''), //el paramMap nos permite hacer un get de la parte de la url que queramos
+  //     //en este caso userId que es lo que pusimos en la path del app.routes.ts
+  //   });
+  //   this.destroyRef.onDestroy(() => suscription.unsubscribe());
+  // } --> NO LO NECESITAMOS GRACIAS AL RESOLVER
+  //RECOGEMOS EL USERNAME ARRIBA, DEL RESOLVER!!!
 }
+
+//Funcion fuera de la clase del componente:
+//Funcion que se enviará al resolve del app.routes.ts
+export const resolveUserName: ResolveFn<String> = (
+  activatedRoute: ActivatedRouteSnapshot,
+  routerState: RouterStateSnapshot
+) => {
+  const usersService = inject(UsersService);
+  const userName =
+    usersService.users.find(
+      (u) => u.id === activatedRoute.paramMap.get('userId')
+    )?.name || '';
+  //Datos que se van a devolver
+  return userName;
+};
+
+//CON ESTO EL COMPONENTE ESTÁ MUCHO MEJOR ESTRUCTURADO!! si quitasemos los comentarios xd

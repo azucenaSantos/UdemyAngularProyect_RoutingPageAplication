@@ -4,7 +4,7 @@ import { NoTaskComponent } from './tasks/no-task/no-task.component';
 import { UserTasksComponent } from './users/user-tasks/user-tasks.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
-import {routes as userRoutes} from './users/users.routes'
+import { routes as userRoutes } from './users/users.routes';
 
 export const routes: Routes = [
   //Vamos a registrar más rutas, que es como será realmente el funcionamiento del enrutamiento
@@ -28,8 +28,14 @@ export const routes: Routes = [
     component: UserTasksComponent, //componente que se mostrará
     //configuraremos rutas hijas, para acceder a las tasks de un user en concreto
     //Las rutas hijas se almacenarán en un archivo a parte para mantener la organización le los archivos del proyecto
-    children: userRoutes //usaremos la referencia al archivo de rutas hijas que tenemos en user.route.ts en la carpeta de users :D
+    children: userRoutes, //usaremos la referencia al archivo de rutas hijas que tenemos en user.route.ts en la carpeta de users :D
     //Más organizado
+    //Esta propiedad sirve para definir un objeto de datos
+    data: {
+      //Establecemos info en estrcturas de clave-valor-> pudiendo acceder a esta info desde el componente que muestra esta path
+      message: 'hello',
+      //Podemos pasar datos estáticos
+    },
   },
   //Añadiremos una ruta para en caso de que el usuario intente acceder a una pagina que no existe se muestre un componente de pagina not found
   {

@@ -28,7 +28,12 @@ export class UserTasksComponent {
   private activatedRoute = inject(ActivatedRoute); //info sobre la ruta que está en la url en este momento
   userName = '';
 
+  //Podemos acceder desde este componente a la info del objeto que hemos pasado
+  //al data en el app.routes.ts
+  message = input.required<string>(); //con el mismo nombre ya lo obtenemos
+
   ngOnInit() {
+    console.log('Input Data:', this.message());
     console.log(this.activatedRoute);
     const suscription = this.activatedRoute.paramMap.subscribe({
       next: (paramMap) =>

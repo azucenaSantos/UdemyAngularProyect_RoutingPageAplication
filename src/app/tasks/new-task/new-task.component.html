@@ -26,7 +26,12 @@
   </p>
 
   <p class="actions">
-    <a>Cancel</a>
+    <a routerLink="../">Cancel</a> <!--en este caso basta con asociar un routerLink para que el usuario vuelva a ver todas las tasks-->
+    <!--con el ../ volvemos a la posicion anterior a la que estamos, justo a la anterior que seria donde se muestra el listado de tasks de un
+    usuario en concreto
+    *en este caso pasamos de users/id/tasks/new a users/id/tasks; justo lo que queremos-->
     <button type="submit">Create</button>
+    <!--para el boton, como es un boton de verdad para poder hacer el envio de los datos de la task
+    tenemos que programar la navegacion al hacer click en el!!-->
   </p>
 </form>

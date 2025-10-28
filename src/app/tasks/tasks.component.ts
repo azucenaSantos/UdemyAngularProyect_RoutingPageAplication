@@ -5,6 +5,7 @@ import {
   inject,
   input,
   OnInit,
+  signal,
 } from '@angular/core';
 
 import { TaskComponent } from './task/task.component';
@@ -38,7 +39,16 @@ export class TasksComponent {
   //Tenemos acceso al userId, ya podemos obtener las tasks de un user en concreto
   //Almacenamos en userTasks un computed con el resultado del filter sobre todas las tasks almacenadas en el taskService
   userTasks = computed(() =>
-    this.tasksService.allTasks().filter((task) => task.userId === this.userId())
+    this.tasksService
+      .allTasks()
+      .filter((task) => task.userId === this.userId())
+      .sort((a, b) => {
+        if (this.order() === 'desc') {
+          return a.id > b.id ? -1 : 1;
+        } else {
+          return a.id > b.id ? 1 : -1;
+        }
+      })
   );
   //Usamos el computed para que userTask se actualice siempre que el userId o tasks cambien de valor :D
   //Sin usar signals tambien se podria haciendo observables para obtener las tareas de un usuario.
@@ -49,20 +59,21 @@ export class TasksComponent {
   //no es required porque puede que lo tengamos o no en la url
 
   //2.Tambien podemos acceder al valor del parámetro de la ruta mediante Observables:
-  order?: 'asc' | 'desc';
+  //order?: 'asc' | 'desc';
+  //Cambiamos la variable para que si sea una signal -> para ordenar las tasks mejor
+  order = signal<'asc' | 'desc'>('desc');
   private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
   ngOnInit() {
     const suscription = this.activatedRoute.queryParams.subscribe({
       next: (params) => {
-        this.order = params['order']; //obtiene el valor del parámetro con este nombre de la url
+        this.order.set(params['order']); //obtiene el valor del parámetro con este nombre de la url y se setea al order
+        //AÑADIMOS ESTE ORDEN AL SORT DEL COMPUTED DEL USERTASKS
       },
     });
     //Destruimos la suscripcion
     this.destroyRef.onDestroy(() => suscription.unsubscribe());
   }
-  //Y funcionaría igual!-> sacariamos en la template el order() y lo cambiamos a order, porque
-  //ya no es una signal y ya!!
   //Funciona igual porque al ser una suscription se ejecuta cada vez que el queryParams cambia
   //(osea, cuando el usuario hace click en otro usuario)
 }

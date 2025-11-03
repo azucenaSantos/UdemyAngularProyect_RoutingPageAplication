@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { CanMatchFn, RedirectCommand, Router, Routes } from '@angular/router';
 import { TasksComponent } from './tasks/tasks.component';
 import { NoTaskComponent } from './tasks/no-task/no-task.component';
 import {
@@ -9,6 +9,19 @@ import {
 import { NotFoundComponent } from './not-found/not-found.component';
 
 import { routes as userRoutes } from './users/users.routes';
+import { inject } from '@angular/core';
+
+const dummyCanMatch: CanMatchFn = (route, segments) => {
+  const router = inject(Router);
+  //esta funcion va a devolver true o false para determinar si se puede o no acceder a la ruta
+  //en la que se aplique el guard asociado a esta funcion
+  const shouldGetAccess = Math.random();
+  if (shouldGetAccess < 0.5) { //condicion random que hemos puesto por probar
+    return true;
+  }
+  //Redirigiremos al usuario en caso de false
+  return new RedirectCommand(router.parseUrl('/unauthorized'));
+};
 
 export const routes: Routes = [
   //Vamos a registrar más rutas, que es como será realmente el funcionamiento del enrutamiento
@@ -34,6 +47,8 @@ export const routes: Routes = [
     //configuraremos rutas hijas, para acceder a las tasks de un user en concreto
     //Las rutas hijas se almacenarán en un archivo a parte para mantener la organización le los archivos del proyecto
     children: userRoutes, //usaremos la referencia al archivo de rutas hijas que tenemos en user.route.ts en la carpeta de users :D
+    //AÑADIMOS UN GUARD QUE CONTROLE EL ACCESO A ESTA RUTA
+    //canMatch: [dummyCanMatch], //añadimos esta funcion que controlará el acceso a la ruta
     //Más organizado
     //Esta propiedad sirve para definir un objeto de datos
     data: {
@@ -49,7 +64,6 @@ export const routes: Routes = [
     //En este caso queremos que el title sea dinámico por lo que
     //tendremos que asignarle un funcionamiento dinámico
     title: resolveTitle,
-    
   },
   //Añadiremos una ruta para en caso de que el usuario intente acceder a una pagina que no existe se muestre un componente de pagina not found
   {

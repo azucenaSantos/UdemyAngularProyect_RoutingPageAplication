@@ -2,7 +2,7 @@ import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TasksService } from '../tasks.service';
-import { Router, RouterLink } from '@angular/router';
+import { CanDeactivateFn, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-new-task',
@@ -19,6 +19,7 @@ export class NewTaskComponent {
   enteredTitle = signal('');
   enteredSummary = signal('');
   enteredDate = signal('');
+  submited = false; //para determinar si el form ha sido enviado y en ese caso que no salte el guard de la path
   private tasksService = inject(TasksService);
 
   //Programaremos el enrutamiento del boton de crear con:
@@ -33,6 +34,7 @@ export class NewTaskComponent {
       },
       this.userId()
     );
+    this.submited= true;
     this.router.navigate(['/users', this.userId(), 'tasks'], {
       //Objeto de configuracion
       replaceUrl: true,
@@ -44,4 +46,20 @@ export class NewTaskComponent {
     //Ahora cada vez que añadamos una task a un usuario, nos redirijirá automáticamente
     //a la pantalla anterior donde vemos todas las taks incluida la nueva task que hemos creado!
   }
+}
+
+export const canLeaveEditPage: CanDeactivateFn<NewTaskComponent> = (component) =>{
+
+  //Más sencillo con la variable submited, para en caso de envio que ya no salga la window siguiente de confirmacion
+  if(component.submited){
+    return true;
+  }
+
+  if(component.enteredTitle() || component.enteredDate() || component.enteredSummary()){
+    //Si alguno de estos campos tiene valor introducido por el usuario, no queremos que se vaya de la pantalla sin guardar
+    return window.confirm("Do you really want to leave? Yo will lose the entered data."); //nos dará true o false
+  }
+  return true; //si no hay nada en los campos devolverá true, por lo que el usuario puede irse de la pantalla
+
+
 }

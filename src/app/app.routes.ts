@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 import { TasksComponent } from './tasks/tasks.component';
 import { NoTaskComponent } from './tasks/no-task/no-task.component';
-import { resolveUserName, UserTasksComponent } from './users/user-tasks/user-tasks.component';
+import {
+  resolveTitle,
+  resolveUserName,
+  UserTasksComponent,
+} from './users/user-tasks/user-tasks.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 import { routes as userRoutes } from './users/users.routes';
@@ -11,6 +15,7 @@ export const routes: Routes = [
   {
     path: '', //dominio (sin /rutas varias)
     component: NoTaskComponent,
+    title: 'No Task Selected', //Con esta propiedad modificamos el titlo de la tab del navegador segun la path en la que estamos
   },
   {
     path: 'tasks', //dominio/tasks
@@ -38,9 +43,13 @@ export const routes: Routes = [
     },
     resolve: {
       //Esta propiedad nos permite definir un objeto de clave valor pero de datos dinámicos
-      userName: resolveUserName //ahora en el componente tenemos acceso a este valor de "userName" calculado con el resolveUserName
+      userName: resolveUserName, //ahora en el componente tenemos acceso a este valor de "userName" calculado con el resolveUserName
       //podriamos tener aqui más resolvers, los que quisiesemos
-    }
+    },
+    //En este caso queremos que el title sea dinámico por lo que
+    //tendremos que asignarle un funcionamiento dinámico
+    title: resolveTitle,
+    
   },
   //Añadiremos una ruta para en caso de que el usuario intente acceder a una pagina que no existe se muestre un componente de pagina not found
   {

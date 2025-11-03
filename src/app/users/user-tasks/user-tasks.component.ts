@@ -43,7 +43,7 @@ export class UserTasksComponent {
 }
 
 //Funcion que se enviará al resolve del app.routes.ts
-export const resolveUserName: ResolveFn<String> = (
+export const resolveUserName: ResolveFn<string> = (
   activatedRoute: ActivatedRouteSnapshot,
   routerState: RouterStateSnapshot
 ) => {
@@ -53,4 +53,13 @@ export const resolveUserName: ResolveFn<String> = (
       (u) => u.id === activatedRoute.paramMap.get('userId')
     )?.name || '';
   return userName;
+};
+
+//Segundo resolver para el titulo
+export const resolveTitle: ResolveFn<string> = (
+  activatedRoute,
+  routerState
+) => {
+  //devolvemos el resultado del resolver que nos da el username + algo mas puesto por nosotros
+  return resolveUserName(activatedRoute, routerState) + "'s Tasks";
 };

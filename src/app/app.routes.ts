@@ -16,7 +16,7 @@ const dummyCanMatch: CanMatchFn = (route, segments) => {
   //esta funcion va a devolver true o false para determinar si se puede o no acceder a la ruta
   //en la que se aplique el guard asociado a esta funcion
   const shouldGetAccess = Math.random();
-  if (shouldGetAccess < 0.5) { //condicion random que hemos puesto por probar
+  if (shouldGetAccess < 1) { //condicion random que hemos puesto por probar
     return true;
   }
   //Redirigiremos al usuario en caso de false
@@ -48,7 +48,7 @@ export const routes: Routes = [
     //Las rutas hijas se almacenarán en un archivo a parte para mantener la organización le los archivos del proyecto
     children: userRoutes, //usaremos la referencia al archivo de rutas hijas que tenemos en user.route.ts en la carpeta de users :D
     //AÑADIMOS UN GUARD QUE CONTROLE EL ACCESO A ESTA RUTA
-    //canMatch: [dummyCanMatch], //añadimos esta funcion que controlará el acceso a la ruta
+    canMatch: [dummyCanMatch], //añadimos esta funcion que controlará el acceso a la ruta
     //Más organizado
     //Esta propiedad sirve para definir un objeto de datos
     data: {
